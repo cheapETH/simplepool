@@ -5,20 +5,20 @@ import json
 import time
 
 @method
-def eth_getWork():
-  response = jsonrequest("http://127.0.0.1:8545", "eth_getWork")
+def eth_getWork(*params):
+  response = jsonrequest("http://127.0.0.1:8545", "eth_getWork", *params)
   return response.data.result
 
 @method
-def eth_submitHashrate():
-  response = jsonrequest("http://127.0.0.1:8545", "eth_submitHashrate")
-  print("***** SUBMIT HASH RATE *****")
+def eth_submitHashrate(*params):
+  response = jsonrequest("http://127.0.0.1:8545", "eth_submitHashrate", *params)
+  print("***** SUBMIT HASH RATE *****", params)
   return response.data.result
 
 @method
-def eth_submitWork():
-  response = jsonrequest("http://127.0.0.1:8545", "eth_submitWork")
-  print("***** SUBMIT WORK *****")
+def eth_submitWork(*params):
+  response = jsonrequest("http://127.0.0.1:8545", "eth_submitWork", *params)
+  print("***** SUBMIT WORK *****", params)
   return response.data.result
 
 import socketserver
