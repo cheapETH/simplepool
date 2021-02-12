@@ -45,10 +45,13 @@ class MyTCPHandler(socketserver.StreamRequestHandler):
       pcnt[addr] += 1
     self.wfile.write(b'HTTP/1.0 200 OK\r\n\r\n'+str(dat).encode('utf-8'))
 
-if __name__ == "__main__":
-  HOST, PORT = "localhost", 8080
+socketserver.TCPServer.allow_reuse_address = True
+class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
+  pass
 
-  socketserver.TCPServer.allow_reuse_address = True
-  with socketserver.TCPServer((HOST, PORT), MyTCPHandler) as server:
+if __name__ == "__main__":
+  HOST, PORT = "0.0.0.0", 8080
+
+  with ThreadedTCPServer((HOST, PORT), MyTCPHandler) as server:
     server.serve_forever()
 
