@@ -1,10 +1,10 @@
 A simple getWork pool for ethereum mining
 
-Payouts are still manual
+Payouts are still manual. TODO: write payouts when someone mines 10 blocks. Also, make the submit actually check the return code
 
 Use with ethminer to mine cheapETH
 
-while true; do ./ethminer -P http://pool.cheapeth.org:8080/<your address>; sleep 1; done
+# while true; do ./ethminer -P http://pool.cheapeth.org:8080/<your address>; sleep 1; done
 
 Learn more about cheapeth at https://cheapeth.org
 
