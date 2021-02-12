@@ -1,6 +1,7 @@
 #from http.server import HTTPServer, BaseHTTPRequestHandler
 from jsonrpcserver import method, dispatch
 from jsonrpcclient import request as jsonrequest
+from collections import defaultdict
 import json
 import time
 
@@ -21,22 +22,27 @@ def eth_submitWork(*params):
   print("***** SUBMIT WORK *****", params)
   return response.data.result
 
+pcnt = defaultdict(int)
 import socketserver
 class MyTCPHandler(socketserver.StreamRequestHandler):
   def handle(self):
     cl = 0
     while 1:
       hh = self.rfile.readline().strip()
-      #print(hh)
+      if b'POST /' in hh:
+        addr = hh.split(b'POST /')[1].split(b' ')[0]
       if b'Content-Length: ' in hh:
         cl = int(hh.split(b'Content-Length: ')[1])
       if hh == b"":
         #print("done")
         break
     idat = self.rfile.read(cl).decode('utf-8')
-    print("<<", idat)
+    print("<<", addr, idat)
     dat = dispatch(idat)
     print(">>", dat)
+    print(pcnt)
+    if 'eth_submitWork' in idat:
+      pcnt[addr] += 1
     self.wfile.write(b'HTTP/1.0 200 OK\r\n\r\n'+str(dat).encode('utf-8'))
 
 if __name__ == "__main__":
