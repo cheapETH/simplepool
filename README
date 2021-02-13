@@ -6,7 +6,7 @@ Use with ethminer to mine cheapETH
 
 # while true; do ./ethminer -P http://pool.cheapeth.org:8080/<your address>; sleep 1; done
 
-Use CUDA instead, instead of OpenCL.
+Use CUDA, instead of OpenCL.
 
 # while true; do ./ethminer -P http://pool.cheapeth.org:8080/<your address> --cuda; sleep 1; done
 
