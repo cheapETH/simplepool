@@ -4,6 +4,7 @@ from jsonrpcclient import request as jsonrequest
 from collections import defaultdict
 import json
 import time
+import re
 
 @method
 def eth_getWork(*params):
@@ -25,6 +26,7 @@ def eth_submitWork(*params):
 xcnt = defaultdict(int)
 pcnt = defaultdict(int)
 import socketserver
+addre = re.compile(b"^0x[a-fA-F0-9]{40}$")
 class MyTCPHandler(socketserver.StreamRequestHandler):
   def handle(self):
     cl = 0
@@ -41,6 +43,9 @@ class MyTCPHandler(socketserver.StreamRequestHandler):
     if addr is None:
       snd = "CONNECTED:"+str(xcnt)+"\n\n\nFOUND BLOCK:"+str(pcnt)
       self.wfile.write(b'HTTP/1.0 200 OK\r\n\r\n'+snd.encode('utf-8'))
+      return
+    if addre.fullmatch(addr) is None:
+      print("BAD ADDRESS", addr)
       return
     idat = self.rfile.read(cl).decode('utf-8')
     print("<<", addr, idat)
